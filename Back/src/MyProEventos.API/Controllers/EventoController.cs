@@ -1,5 +1,6 @@
-using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using MyProEventos.API.Data;
 using MyProEventos.API.Models;
 
 namespace MyProEventos.API.Controllers
@@ -8,14 +9,16 @@ namespace MyProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
     {
+        private readonly DataContext context;
+
+        public EventoController(DataContext context)
+        {
+            this.context = context;
+        }
+
         [HttpGet]
-        public Evento Get() => new Evento() {
-            EventoId = 1,
-            Tema = "Novo Tema",
-            Local = "Rio de Janeiro",
-            Lote = "1º Lote",
-            QtdPessoas = 250,
-            DataEvento = DateTime.Now.AddDays(2).ToString()
-        };
+        public IEnumerable<Evento> Get() {
+            return context.Eventos;
+        }
     }
 }
